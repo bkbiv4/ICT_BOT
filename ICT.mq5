@@ -277,7 +277,7 @@ void OnTick() {
      ObjectCreate(_Symbol, "londonOpen", OBJ_VLINE, 0, londonOpenTime, 0);
      ObjectCreate(_Symbol, "londonClose", OBJ_VLINE, 0, londonCloseTime, 0);
      ObjectCreate(_Symbol, "newyorkOpen", OBJ_VLINE, 0, newyorkOpenTime, 0);
-     ObjectCreate(_Symbol, "newyorkClose", OBJ_VLINE, 0, newyorkCloseTime, 0);
+    // ObjectCreate(Symbol, "newyorkClose", OBJ_VLINE, 0, newyorkCloseTime, 0);
      
      ArraySetAsSeries(asianPriceArray, true);
      
