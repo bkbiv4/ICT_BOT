@@ -60,34 +60,36 @@ void OnTick() {
      ObjectCreate(_Symbol,"judasOpenLine", OBJ_VLINE, 0, judasOpenTime, 0.0);
      ObjectSetInteger(_Symbol, "judasOpenLine", OBJPROP_COLOR, clrAzure);
      
-     /// MARK: - ICT Killzones
-     datetime ictNewYorkOpenTime = newyorkOpenTime - 3600;
-     datetime ictNewYorkCloseTime = ictNewYorkOpenTime + 7200;
      
-     double ictNewYorkOpenPrice = 0.0;
-     for(int i = 0; i < hourlyPriceArray.Size(); i++) { 
-          if(hourlyPriceArray[i].time == ictNewYorkOpenTime) {
-               ictNewYorkOpenPrice = hourlyPriceArray[i].high;
-          }
-     }
-     
-     datetime ictLondonCloseTime = londonCloseTime;
-     datetime ictLondonCloseOpenTime = ictLondonCloseTime - 7200;
-     
-     double ictLondonClosePrice = 0.0;
-     for(int i = 0; i < hourlyPriceArray.Size(); i++) { 
-          if(hourlyPriceArray[i].time == ictLondonCloseOpenTime) {
-               ictLondonClosePrice = hourlyPriceArray[i].high;
-          }
-     }
 
      
 
      if (drawSessionBoxes) {
           drawSessions();
      }
-
+     
+     /// MARK: - ICT Killzones
      if (ictKillzones) {
+          datetime ictNewYorkOpenTime = newyorkOpenTime - 3600;
+          datetime ictNewYorkCloseTime = ictNewYorkOpenTime + 7200;
+          
+          double ictNewYorkOpenPrice = 0.0;
+          for(int i = 0; i < hourlyPriceArray.Size(); i++) { 
+               if(hourlyPriceArray[i].time == ictNewYorkOpenTime) {
+                    ictNewYorkOpenPrice = hourlyPriceArray[i].high;
+               }
+          }
+          
+          datetime ictLondonCloseTime = londonCloseTime;
+          datetime ictLondonCloseOpenTime = ictLondonCloseTime - 7200;
+          
+          double ictLondonClosePrice = 0.0;
+          for(int i = 0; i < hourlyPriceArray.Size(); i++) { 
+               if(hourlyPriceArray[i].time == ictLondonCloseOpenTime) {
+                    ictLondonClosePrice = hourlyPriceArray[i].high;
+               }
+          }
+
           ObjectCreate(_Symbol, "ictLondonCloseOpenTimeText", OBJ_TEXT, 0, (ictLondonCloseOpenTime + ictLondonCloseTime)/2, ictLondonClosePrice + 0.0015, ictLondonCloseTime, ictLondonClosePrice + 0.0015);
           ObjectSetString(_Symbol, "ictLondonCloseOpenTimeText", OBJPROP_TEXT, "London Open");
           ObjectSetInteger(_Symbol, "ictLondonCloseOpenTimeText",OBJPROP_COLOR, clrDodgerBlue);
