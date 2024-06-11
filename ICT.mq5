@@ -11,7 +11,7 @@
 //input string endTradingTime = "16:30";
 //input int dailyOpens = 0;
 //input int weeklyOpens = 0;
-input bool ictkKillzones = false;
+input bool ictKillzones = false;
 input bool drawSessionBoxes = true;
 MqlRates hourlyPriceArray[], dailyPriceArray[],  weeklyPriceArray[], asianPriceArray[], newyorkPriceArray[], londonPriceArray[]; 
 datetime asianOpenTime, asianCloseTime, newyorkOpenTime, newyorkCloseTime, londonOpenTime, londonCloseTime;
@@ -42,6 +42,7 @@ void OnTick() {
      ObjectCreate(_Symbol, "dailyOpen", OBJ_VLINE, 0, dailyOpenTime, 0);
      ObjectCreate(_Symbol, "dailyHigh", OBJ_TREND, 0, dailyOpenTime, dailyHighPrice, dailyOpenTime + 86400, dailyHighPrice);
      ObjectCreate(_Symbol, "dailyLow", OBJ_TREND, 0, dailyOpenTime, dailyLowPrice, dailyOpenTime + 86400, dailyLowPrice);
+     ObjectCreate(_Symbol, "dailyOpenPrice", OBJ_TREND, 0, dailyOpenTime, dailyOpenPrice, dailyOpenTime + 86400, dailyOpenPrice);
 
      asianOpenTime = dailyPriceArray[0].time + 10800;
      asianCloseTime = asianOpenTime + 32400;
@@ -80,12 +81,23 @@ void OnTick() {
           }
      }
 
+     
 
      if (drawSessionBoxes) {
           drawSessions();
      }
 
-     if (ictkKillzones) {
+     if (ictKillzones) {
+          ObjectCreate(_Symbol, "ictLondonCloseOpenTimeText", OBJ_TEXT, 0, (ictLondonCloseOpenTime + ictLondonCloseTime)/2, ictLondonClosePrice + 0.0015, ictLondonCloseTime, ictLondonClosePrice + 0.0015);
+          ObjectSetString(_Symbol, "ictLondonCloseOpenTimeText", OBJPROP_TEXT, "London Open");
+          ObjectSetInteger(_Symbol, "ictLondonCloseOpenTimeText",OBJPROP_COLOR, clrDodgerBlue);
+          ObjectSetInteger(_Symbol, "ictLondonCloseOpenTimeText",OBJPROP_FONTSIZE, 10);
+          ObjectSetInteger(_Symbol, "ictLondonCloseOpenTimeText", OBJPROP_ANCHOR, ANCHOR_CENTER);
+    
+          ObjectCreate(_Symbol, "ictLondonCloseOpenBox", OBJ_RECTANGLE, 0, ictLondonCloseOpenTime, ictLondonClosePrice + 0.0015 + 0.0002, ictLondonCloseTime, ictLondonClosePrice + 0.0015 - 0.0002);
+          ObjectCreate(_Symbol, "ictLondonCloseOpenBoxLeft", OBJ_TREND, 0, ictLondonCloseOpenTime, ictLondonClosePrice + 0.0015 + 0.0001, ictLondonCloseOpenTime, ictLondonClosePrice + 0.0015 - 0.0005);
+          ObjectCreate(_Symbol, "ictLondonCloseOpenBoxRight", OBJ_TREND, 0, ictLondonCloseTime, ictLondonClosePrice + 0.0015 + 0.0001, ictLondonCloseTime, ictLondonClosePrice + 0.0015 - 0.0005);
+
           ObjectCreate(_Symbol, "ictNewyorkOpenText", OBJ_TEXT, 0, (ictNewYorkOpenTime + ictNewYorkCloseTime)/2, ictNewYorkOpenPrice + 0.0015, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015);
           ObjectSetString(_Symbol, "ictNewyorkOpenText", OBJPROP_TEXT, "New York Open");
           ObjectSetInteger(_Symbol, "ictNewyorkOpenText",OBJPROP_COLOR, clrDodgerBlue);
@@ -95,17 +107,6 @@ void OnTick() {
           ObjectCreate(_Symbol, "ictNewyorkOpenBox", OBJ_RECTANGLE, 0, ictNewYorkOpenTime, ictNewYorkOpenPrice + 0.0015 + 0.0002, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015 - 0.0002);
           ObjectCreate(_Symbol, "ictNewyorkOpenBoxLeft", OBJ_TREND, 0, ictNewYorkOpenTime, ictNewYorkOpenPrice + 0.0015 + 0.0001, ictNewYorkOpenTime, ictNewYorkOpenPrice + 0.0015 - 0.0005);
           ObjectCreate(_Symbol, "ictNewyorkOpenBoxRight", OBJ_TREND, 0, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015 + 0.0001, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015 - 0.0005);
-
-          ObjectCreate(_Symbol, "ictLondonCloseOpenTimeText", OBJ_TEXT, 0, (ictLondonCloseOpenTime + ictLondonCloseTime)/2, ictLondonClosePrice + 0.0015, ictLondonCloseTime, ictLondonClosePrice + 0.0015);
-          ObjectSetString(_Symbol, "ictLondonCloseOpenTimeText", OBJPROP_TEXT, "London Open");
-          ObjectSetInteger(_Symbol, "ictLondonCloseOpenTimeText",OBJPROP_COLOR, clrDodgerBlue);
-          ObjectSetInteger(_Symbol, "ictLondonCloseOpenTimeText",OBJPROP_FONTSIZE, 10);
-          ObjectSetInteger(_Symbol, "ictLondonCloseOpenTimeText", OBJPROP_ANCHOR, ANCHOR_CENTER);
-
-          ObjectCreate(_Symbol, "ictLondonCloseOpenBox", OBJ_RECTANGLE, 0, ictLondonCloseOpenTime, ictLondonClosePrice + 0.0015 + 0.0002, ictLondonCloseTime, ictLondonClosePrice + 0.0015 - 0.0002);
-          ObjectCreate(_Symbol, "ictLondonCloseOpenBoxLeft", OBJ_TREND, 0, ictLondonCloseOpenTime, ictLondonClosePrice + 0.0015 + 0.0001, ictLondonCloseOpenTime, ictLondonClosePrice + 0.0015 - 0.0005);
-          ObjectCreate(_Symbol, "ictLondonCloseOpenBoxRight", OBJ_TREND, 0, ictLondonCloseTime, ictLondonClosePrice + 0.0015 + 0.0001, ictLondonCloseTime, ictLondonClosePrice + 0.0015 - 0.0005);
-
      }
 }
 
@@ -219,7 +220,7 @@ void drawNewYorkSession() {
      newyorkHigh = newyorkPriceArray[newyorkHighPrice].high;
      newyorkLow = newyorkPriceArray[newyorkLowPrice].low;
      
-     ObjectCreate(_Symbol, "newyorkBox", OBJ_RECTANGLE, 0, newyorkOpenTime, newyorkPriceArray[newyorkLowPrice].low, newyorkCloseTime, newyorkPriceArray[newyorkHighPrice].high);
+     ObjectCreate(Symbol(), "newyorkBox", OBJ_RECTANGLE, 0, newyorkOpenTime, newyorkPriceArray[newyorkLowPrice].low, newyorkCloseTime, newyorkPriceArray[newyorkHighPrice].high);
      ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_BACK, true);
      ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_COLOR, clrSpringGreen);
      ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_FILL, true);
@@ -229,7 +230,11 @@ void drawNewYorkSession() {
 //     //On the chart set up clickable butttons to control the switch
 //     //Use boolean to set up different modes
      
-
+//     if (ictlondonclosekillzone) {
+//          Comment("True");
+//          
+//     
+//     }
 
 
 //ObjectCreate(_Symbol, "yesterdayLow", OBJ_TREND, 0, dailyPriceArray[0].time, dailyPriceArray[1].low, dailyPriceArray[0].time + 86400, dailyPriceArray[1].low);
@@ -251,5 +256,7 @@ void drawNewYorkSession() {
      High Odds that the low will from before the above end date of the price array
      The odds are even greater between Tuesday 3AM and Wednesday 7AM
      Test and Find a higher timeframe moving average to help with directional bias
-     Can also use a hourly or 30
+     Can also use a hourly or 30 minute moving average
+
+     Map weekly opening
      */
