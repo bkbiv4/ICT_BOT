@@ -256,7 +256,7 @@
 
 
 MqlRates dailyPriceArray[], asianPriceArray[], newyorkPriceArray[], londonPriceArray[]; 
-     
+datetime asianOpenTime, asianCloseTime, newyorkOpenTime, newyorkCloseTime, londonOpenTime, londonCloseTime;
 void OnTick() {
 
 
@@ -264,25 +264,54 @@ void OnTick() {
      ArraySetAsSeries(dailyPriceArray, true);
      int dailyData = CopyRates(_Symbol, PERIOD_D1, 0, 28, dailyPriceArray);
      double dailyOpenPrice = dailyPriceArray[0].open;
-     
-     datetime dailyOpenTime = dailyPriceArray[1].time;
-     datetime asianOpenTime = dailyOpenTime + 10800;
-     datetime asianCloseTime = asianOpenTime + 32400;
-     datetime londonOpenTime = dailyPriceArray[1].time + 36000;
-     datetime londonCloseTime = londonOpenTime + 32400;
-     datetime newyorkOpenTime = dailyPriceArray[1].time + 54000;
-     datetime newyorkCloseTime = newyorkOpenTime + 32400;
-     
- 
-     
+     datetime dailyOpenTime = dailyPriceArray[0].time;
      ObjectCreate(_Symbol, "dailyOpen", OBJ_VLINE, 0, dailyOpenTime, 0);
-     ObjectCreate(_Symbol, "asianOpen", OBJ_VLINE, 0, asianOpenTime, 0);
-     ObjectCreate(_Symbol, "asianClose", OBJ_VLINE, 0, asianCloseTime, 0);
-     ObjectCreate(_Symbol, "londonOpen", OBJ_VLINE, 0, londonOpenTime, 0);
-     ObjectCreate(_Symbol, "londonClose", OBJ_VLINE, 0, londonCloseTime, 0);
-     ObjectCreate(_Symbol, "newyorkOpen", OBJ_VLINE, 0, newyorkOpenTime, 0);
-     ObjectCreate(_Symbol, "newyorkClose", OBJ_VLINE, 0, newyorkCloseTime, 0);
-     
+
+     asianOpenTime = dailyPriceArray[1].time + 10800;
+     asianCloseTime = asianOpenTime + 32400;
+     londonOpenTime = dailyPriceArray[0].time + 36000;
+     londonCloseTime = londonOpenTime + 32400;
+     newyorkOpenTime = dailyPriceArray[0].time + 54000;
+     newyorkCloseTime = newyorkOpenTime + 32400;
+          
+     if (TimeCurrent() > newyorkOpenTime) {
+          drawAsianSession();
+          drawLondonSession();
+          drawNewYorkSession();
+     }
+     else if (TimeCurrent() > londonOpenTime) {
+          drawAsianSession();
+          drawLondonSession();
+          newyorkOpenTime -= 86400;
+          newyorkCloseTime -= 86400;
+          drawNewYorkSession();
+     }
+     else if (TimeCurrent() > asianOpenTime) {
+          drawAsianSession();
+          londonCloseTime -= 86400;
+          londonOpenTime -= 86400;
+          drawLondonSession();
+          newyorkOpenTime -= 86400;
+          newyorkCloseTime -= 86400;
+          drawNewYorkSession();
+     }
+     else {
+          asianOpenTime -= 86400;
+          asianCloseTime -= 86400;
+          drawAsianSession();
+          londonCloseTime -= 86400;
+          londonOpenTime -= 86400;
+          drawLondonSession();
+          newyorkOpenTime -= 86400;
+          newyorkCloseTime -= 86400;
+          drawNewYorkSession();
+     }
+}
+
+
+
+void drawAsianSession() {
+     /// MARK - Asian Session Values
      ArraySetAsSeries(asianPriceArray, true);
      
      int asianOpenBar = iBarShift(_Symbol, PERIOD_M1, asianOpenTime, false);
@@ -302,10 +331,14 @@ void OnTick() {
      double asianHigh = asianPriceArray[asianHighPrice].high;
      double asianLow = asianPriceArray[asianLowPrice].low;
      
-     
-     //--- London Session Values
-     
-     
+     ObjectCreate(_Symbol, "asianBox", OBJ_RECTANGLE, 0, asianOpenTime, asianPriceArray[asianLowPrice].low, asianCloseTime, asianPriceArray[asianHighPrice].high);
+     ObjectSetInteger(_Symbol, "asianBox",OBJPROP_BACK, true);
+     ObjectSetInteger(_Symbol, "asianBox",OBJPROP_COLOR, clrPurple);
+     ObjectSetInteger(_Symbol, "asianBox",OBJPROP_FILL, true);
+}
+
+void drawLondonSession() {
+     /// MARK - London Session Values
      ArraySetAsSeries(londonPriceArray, true);
      
      int londonOpenBar = iBarShift(_Symbol, PERIOD_M1, londonOpenTime, false);
@@ -325,11 +358,14 @@ void OnTick() {
      double londonHigh = londonPriceArray[londonHighPrice].high;
      double londonLow = londonPriceArray[londonLowPrice].low;
      
-     
+     ObjectCreate(_Symbol, "londonBox", OBJ_RECTANGLE, 0, londonOpenTime, londonPriceArray[londonLowPrice].low, londonCloseTime, londonPriceArray[londonHighPrice].high);
+     ObjectSetInteger(_Symbol, "londonBox",OBJPROP_BACK, true);   
+     ObjectSetInteger(_Symbol, "londonBox",OBJPROP_COLOR, clrBlue);
+     ObjectSetInteger(_Symbol, "londonBox",OBJPROP_FILL, true);
+}
 
-     //--- New York Session Values
-     
-     
+void drawNewYorkSession() {
+      //--- New York Session Values
      ArraySetAsSeries(newyorkPriceArray, true);
      
      int newyorkOpenBar = iBarShift(_Symbol, PERIOD_M1, newyorkOpenTime, false);
@@ -349,13 +385,8 @@ void OnTick() {
      double newyorkHigh = newyorkPriceArray[newyorkHighPrice].high;
      double newyorkLow = newyorkPriceArray[newyorkLowPrice].low;
      
-     
-     ObjectCreate(_Symbol, "asianBox", OBJ_RECTANGLE, 0, asianOpenTime, asianPriceArray[asianLowPrice].low, asianCloseTime, asianPriceArray[asianHighPrice].high);
-     ObjectSetInteger(_Symbol, "asianBox",OBJPROP_BACK, true);
      ObjectCreate(_Symbol, "newyorkBox", OBJ_RECTANGLE, 0, newyorkOpenTime, newyorkPriceArray[newyorkLowPrice].low, newyorkCloseTime, newyorkPriceArray[newyorkHighPrice].high);
      ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_BACK, true);
-     ObjectCreate(_Symbol, "londonBox", OBJ_RECTANGLE, 0, londonOpenTime, londonPriceArray[londonLowPrice].low, londonCloseTime, londonPriceArray[londonHighPrice].high);
-     ObjectSetInteger(_Symbol, "londonBox",OBJPROP_BACK, true);
-
-
+     ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_COLOR, clrSpringGreen);
+     ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_FILL, true);
 }
