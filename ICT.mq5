@@ -41,7 +41,7 @@ void OnTick() {
      datetime dailyOpenTime = dailyPriceArray[0].time;
      ObjectCreate(_Symbol, "dailyOpen", OBJ_VLINE, 0, dailyOpenTime, 0);
      ObjectCreate(_Symbol, "dailyHigh", OBJ_TREND, 0, dailyOpenTime, dailyHighPrice, dailyOpenTime + 86400, dailyHighPrice);
-     ObjectCreate(_Symbol, "dailyLow", OBJ_TREND, 0, dailyOpenTime, dailyLowPrice, dailyOpenTime + 86400, dailyLowPrice);
+     ObjectCreate(Symbol(), "dailyLow", OBJ_TREND, 0, dailyOpenTime, dailyLowPrice, dailyOpenTime + 86400, dailyLowPrice);
 
      asianOpenTime = dailyPriceArray[0].time + 10800;
      asianCloseTime = asianOpenTime + 32400;
@@ -63,7 +63,7 @@ void OnTick() {
      datetime ictNewYorkOpenTime = newyorkOpenTime - 3600;
      datetime ictNewYorkCloseTime = ictNewYorkOpenTime + 7200;
      
-     double ictNewYorkOpenPrice;
+     double ictNewYorkOpenPrice = 0.0;
      for(int i = 0; i < hourlyPriceArray.Size(); i++) { 
           if(hourlyPriceArray[i].time == ictNewYorkOpenTime) {
                ictNewYorkOpenPrice = hourlyPriceArray[i].high;
@@ -73,7 +73,7 @@ void OnTick() {
      datetime ictLondonCloseTime = londonCloseTime;
      datetime ictLondonCloseOpenTime = ictLondonCloseTime - 7200;
      
-     double ictLondonClosePrice;
+     double ictLondonClosePrice = 0.0;
      for(int i = 0; i < hourlyPriceArray.Size(); i++) { 
           if(hourlyPriceArray[i].time == ictLondonCloseOpenTime) {
                ictLondonClosePrice = hourlyPriceArray[i].high;
@@ -89,9 +89,6 @@ void OnTick() {
      ObjectCreate(_Symbol, "ictNewyorkOpenBox", OBJ_RECTANGLE, 0, ictNewYorkOpenTime, ictNewYorkOpenPrice + 0.0015 + 0.0002, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015 - 0.0002);
      ObjectCreate(_Symbol, "ictNewyorkOpenBoxLeft", OBJ_TREND, 0, ictNewYorkOpenTime, ictNewYorkOpenPrice + 0.0015 + 0.0001, ictNewYorkOpenTime, ictNewYorkOpenPrice + 0.0015 - 0.0005);
      ObjectCreate(_Symbol, "ictNewyorkOpenBoxRight", OBJ_TREND, 0, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015 + 0.0001, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015 - 0.0005);
-
-
-
 
      if (drawSessionBoxes) {
           drawSessions();
@@ -131,9 +128,6 @@ void drawSessions() {
           newyorkCloseTime -= 86400;
           drawNewYorkSession();
      }
-     //if (dailyLowPrice == asianLow || dailyHighPrice == asianHigh) {
-     //     Comment("The High or Low of the day has been set in the Asian Session");
-     //}
 }
 
 void drawAsianSession() {
@@ -211,7 +205,7 @@ void drawNewYorkSession() {
      newyorkHigh = newyorkPriceArray[newyorkHighPrice].high;
      newyorkLow = newyorkPriceArray[newyorkLowPrice].low;
      
-     ObjectCreate(_Symbol, "newyorkBox", OBJ_RECTANGLE, 0, newyorkOpenTime, newyorkPriceArray[newyorkLowPrice].low, newyorkCloseTime, newyorkPriceArray[newyorkHighPrice].high);
+     ObjectCreate(Symbol(), "newyorkBox", OBJ_RECTANGLE, 0, newyorkOpenTime, newyorkPriceArray[newyorkLowPrice].low, newyorkCloseTime, newyorkPriceArray[newyorkHighPrice].high);
      ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_BACK, true);
      ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_COLOR, clrSpringGreen);
      ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_FILL, true);
@@ -244,3 +238,16 @@ void drawNewYorkSession() {
      //ObjectSetInteger(_Symbol, "yesterdayHigh",OBJPROP_COLOR, clrDodgerBlue);
      //ObjectSetInteger(_Symbol, "yesterdayClose",OBJPROP_COLOR, clrWhite);
      //ObjectSetInteger(_Symbol, "yesterdayOpen",OBJPROP_COLOR, clrGray);
+
+
+
+     /// MARK: - Weekly Smart Money
+
+     /*
+     Bullish Conditions - I will need to determine probabilities and different scenarios to choose a proper timeframe
+     Create a Price array that spans weekly open time until Wednesday 7AM
+     High Odds that the low will from before the above end date of the price array
+     The odds are even greater between Tuesday 3AM and Wednesday 7AM
+     Test and Find a higher timeframe moving average to help with directional bias
+     Can also use a hourly or 30
+     */
