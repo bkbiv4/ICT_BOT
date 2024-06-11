@@ -22,15 +22,15 @@ void OnTick() {
      ArraySetAsSeries(weeklyPriceArray, true);
      int weeklyData = CopyRates(_Symbol,PERIOD_W1, 0, 16, weeklyPriceArray);
      double weeklyOpenPrice = weeklyPriceArray[0].open;
-     ObjectCreate(_Symbol, "weeklyOpen", OBJ_TREND, 0, weeklyPriceArray[0].time + 86400, weeklyOpenPrice, weeklyPriceArray[0].time + 432000, weeklyOpenPrice);
-     ObjectSetInteger(_Symbol, "weeklyOpen",OBJPROP_COLOR, clrPurple);
-     ObjectCreate(_Symbol, "weeklyOpenLine", OBJ_VLINE, 0, weeklyPriceArray[0].time + 86400, 0);
-     ObjectCreate(_Symbol, "weekOpenText", OBJ_TEXT, 0, weeklyPriceArray[0].time + 432000, weeklyOpenPrice);
-     ObjectSetString(_Symbol, "weekOpenText", OBJPROP_TEXT, "Weekly Open");
-     ObjectSetString(_Symbol, "weekOpenText", OBJPROP_FONT, "Arial");
-     ObjectSetString(_Symbol, "weekOpenText", OBJPROP_TEXT, "Weekly Open");
-     ObjectSetInteger(_Symbol, "weekOpenText", OBJPROP_ANCHOR, ANCHOR_RIGHT_LOWER);
-     ObjectSetInteger(_Symbol, "weekOpenText", OBJPROP_FONTSIZE, 8);
+     ObjectCreate(0, "weeklyOpen", OBJ_TREND, 0, weeklyPriceArray[0].time + 86400, weeklyOpenPrice, weeklyPriceArray[0].time + 432000, weeklyOpenPrice);
+     ObjectSetInteger(0, "weeklyOpen",OBJPROP_COLOR, clrPurple);
+     ObjectCreate(0, "weeklyOpenLine", OBJ_VLINE, 0, weeklyPriceArray[0].time + 86400, 0);
+     ObjectCreate(0, "weekOpenText", OBJ_TEXT, 0, weeklyPriceArray[0].time + 432000, weeklyOpenPrice);
+     ObjectSetString(0, "weekOpenText", OBJPROP_TEXT, "Weekly Open");
+     ObjectSetString(0, "weekOpenText", OBJPROP_FONT, "Arial");
+     ObjectSetString(0, "weekOpenText", OBJPROP_TEXT, "Weekly Open");
+     ObjectSetInteger(0, "weekOpenText", OBJPROP_ANCHOR, ANCHOR_RIGHT_LOWER);
+     ObjectSetInteger(0, "weekOpenText", OBJPROP_FONTSIZE, 8);
 
      /// MARK: - Daily Session Values
      ArraySetAsSeries(dailyPriceArray, true);
@@ -39,10 +39,10 @@ void OnTick() {
      double dailyHighPrice = dailyPriceArray[0].high;
      double dailyLowPrice = dailyPriceArray[0].low;
      datetime dailyOpenTime = dailyPriceArray[0].time;
-     ObjectCreate(_Symbol, "dailyOpen", OBJ_VLINE, 0, dailyOpenTime, 0);
-     ObjectCreate(_Symbol, "dailyHigh", OBJ_TREND, 0, dailyOpenTime, dailyHighPrice, dailyOpenTime + 86400, dailyHighPrice);
-     ObjectCreate(_Symbol, "dailyLow", OBJ_TREND, 0, dailyOpenTime, dailyLowPrice, dailyOpenTime + 86400, dailyLowPrice);
-     ObjectCreate(_Symbol, "dailyOpenPrice", OBJ_TREND, 0, dailyOpenTime, dailyOpenPrice, dailyOpenTime + 86400, dailyOpenPrice);
+     ObjectCreate(0, "dailyOpen", OBJ_VLINE, 0, dailyOpenTime, 0);
+     ObjectCreate(0, "dailyHigh", OBJ_TREND, 0, dailyOpenTime, dailyHighPrice, dailyOpenTime + 86400, dailyHighPrice);
+     ObjectCreate(0, "dailyLow", OBJ_TREND, 0, dailyOpenTime, dailyLowPrice, dailyOpenTime + 86400, dailyLowPrice);
+     ObjectCreate(0, "dailyOpenPrice", OBJ_TREND, 0, dailyOpenTime, dailyOpenPrice, dailyOpenTime + 86400, dailyOpenPrice);
 
      asianOpenTime = dailyPriceArray[0].time + 10800;
      asianCloseTime = asianOpenTime + 32400;
@@ -56,8 +56,8 @@ void OnTick() {
 
      /// MARK: - Judas Swing Values
      datetime judasOpenTime = dailyOpenTime + 25200;
-     ObjectCreate(_Symbol,"judasOpenLine", OBJ_VLINE, 0, judasOpenTime, 0.0);
-     ObjectSetInteger(_Symbol, "judasOpenLine", OBJPROP_COLOR, clrAzure);
+     ObjectCreate(0,"judasOpenLine", OBJ_VLINE, 0, judasOpenTime, 0.0);
+     ObjectSetInteger(0, "judasOpenLine", OBJPROP_COLOR, clrAzure);
 
      if (drawSessionBoxes) {
           drawSessions();
@@ -69,7 +69,7 @@ void OnTick() {
           datetime ictNewYorkCloseTime = ictNewYorkOpenTime + 7200;
           
           double ictNewYorkOpenPrice = 0.0;
-          for(int i = 0; i < hourlyPriceArray.Size(); i++) { 
+          for(ulong i = 0; i < hourlyPriceArray.Size(); i++) { 
                if(hourlyPriceArray[i].time == ictNewYorkOpenTime) {
                     ictNewYorkOpenPrice = hourlyPriceArray[i].high;
                }
@@ -79,31 +79,31 @@ void OnTick() {
           datetime ictLondonCloseOpenTime = ictLondonCloseTime - 7200;
           
           double ictLondonClosePrice = 0.0;
-          for(int i = 0; i < hourlyPriceArray.Size(); i++) { 
+          for(ulong i = 0; i < hourlyPriceArray.Size(); i++) { 
                if(hourlyPriceArray[i].time == ictLondonCloseOpenTime) {
                     ictLondonClosePrice = hourlyPriceArray[i].high;
                }
           }
 
-          ObjectCreate(_Symbol, "ictLondonCloseOpenTimeText", OBJ_TEXT, 0, (ictLondonCloseOpenTime + ictLondonCloseTime)/2, ictLondonClosePrice + 0.0015, ictLondonCloseTime, ictLondonClosePrice + 0.0015);
-          ObjectSetString(_Symbol, "ictLondonCloseOpenTimeText", OBJPROP_TEXT, "London Open");
-          ObjectSetInteger(_Symbol, "ictLondonCloseOpenTimeText",OBJPROP_COLOR, clrDodgerBlue);
-          ObjectSetInteger(_Symbol, "ictLondonCloseOpenTimeText",OBJPROP_FONTSIZE, 10);
-          ObjectSetInteger(_Symbol, "ictLondonCloseOpenTimeText", OBJPROP_ANCHOR, ANCHOR_CENTER);
+          ObjectCreate(0, "ictLondonCloseOpenTimeText", OBJ_TEXT, 0, (ictLondonCloseOpenTime + ictLondonCloseTime)/2, ictLondonClosePrice + 0.0015, ictLondonCloseTime, ictLondonClosePrice + 0.0015);
+          ObjectSetString(0, "ictLondonCloseOpenTimeText", OBJPROP_TEXT, "London Open");
+          ObjectSetInteger(0, "ictLondonCloseOpenTimeText",OBJPROP_COLOR, clrDodgerBlue);
+          ObjectSetInteger(0, "ictLondonCloseOpenTimeText",OBJPROP_FONTSIZE, 10);
+          ObjectSetInteger(0, "ictLondonCloseOpenTimeText", OBJPROP_ANCHOR, ANCHOR_CENTER);
     
-          ObjectCreate(_Symbol, "ictLondonCloseOpenBox", OBJ_RECTANGLE, 0, ictLondonCloseOpenTime, ictLondonClosePrice + 0.0015 + 0.0002, ictLondonCloseTime, ictLondonClosePrice + 0.0015 - 0.0002);
-          ObjectCreate(_Symbol, "ictLondonCloseOpenBoxLeft", OBJ_TREND, 0, ictLondonCloseOpenTime, ictLondonClosePrice + 0.0015 + 0.0001, ictLondonCloseOpenTime, ictLondonClosePrice + 0.0015 - 0.0005);
-          ObjectCreate(_Symbol, "ictLondonCloseOpenBoxRight", OBJ_TREND, 0, ictLondonCloseTime, ictLondonClosePrice + 0.0015 + 0.0001, ictLondonCloseTime, ictLondonClosePrice + 0.0015 - 0.0005);
+          ObjectCreate(0, "ictLondonCloseOpenBox", OBJ_RECTANGLE, 0, ictLondonCloseOpenTime, ictLondonClosePrice + 0.0015 + 0.0002, ictLondonCloseTime, ictLondonClosePrice + 0.0015 - 0.0002);
+          ObjectCreate(0, "ictLondonCloseOpenBoxLeft", OBJ_TREND, 0, ictLondonCloseOpenTime, ictLondonClosePrice + 0.0015 + 0.0001, ictLondonCloseOpenTime, ictLondonClosePrice + 0.0015 - 0.0005);
+          ObjectCreate(0, "ictLondonCloseOpenBoxRight", OBJ_TREND, 0, ictLondonCloseTime, ictLondonClosePrice + 0.0015 + 0.0001, ictLondonCloseTime, ictLondonClosePrice + 0.0015 - 0.0005);
 
-          ObjectCreate(_Symbol, "ictNewyorkOpenText", OBJ_TEXT, 0, (ictNewYorkOpenTime + ictNewYorkCloseTime)/2, ictNewYorkOpenPrice + 0.0015, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015);
-          ObjectSetString(_Symbol, "ictNewyorkOpenText", OBJPROP_TEXT, "New York Open");
-          ObjectSetInteger(_Symbol, "ictNewyorkOpenText",OBJPROP_COLOR, clrDodgerBlue);
-          ObjectSetInteger(_Symbol, "ictNewyorkOpenText",OBJPROP_FONTSIZE, 10);
-          ObjectSetInteger(_Symbol, "ictNewyorkOpenText", OBJPROP_ANCHOR, ANCHOR_CENTER);
+          ObjectCreate(0, "ictNewyorkOpenText", OBJ_TEXT, 0, (ictNewYorkOpenTime + ictNewYorkCloseTime)/2, ictNewYorkOpenPrice + 0.0015, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015);
+          ObjectSetString(0, "ictNewyorkOpenText", OBJPROP_TEXT, "New York Open");
+          ObjectSetInteger(0, "ictNewyorkOpenText",OBJPROP_COLOR, clrDodgerBlue);
+          ObjectSetInteger(0, "ictNewyorkOpenText",OBJPROP_FONTSIZE, 10);
+          ObjectSetInteger(0, "ictNewyorkOpenText", OBJPROP_ANCHOR, ANCHOR_CENTER);
 
-          ObjectCreate(_Symbol, "ictNewyorkOpenBox", OBJ_RECTANGLE, 0, ictNewYorkOpenTime, ictNewYorkOpenPrice + 0.0015 + 0.0002, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015 - 0.0002);
-          ObjectCreate(_Symbol, "ictNewyorkOpenBoxLeft", OBJ_TREND, 0, ictNewYorkOpenTime, ictNewYorkOpenPrice + 0.0015 + 0.0001, ictNewYorkOpenTime, ictNewYorkOpenPrice + 0.0015 - 0.0005);
-          ObjectCreate(_Symbol, "ictNewyorkOpenBoxRight", OBJ_TREND, 0, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015 + 0.0001, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015 - 0.0005);
+          ObjectCreate(0, "ictNewyorkOpenBox", OBJ_RECTANGLE, 0, ictNewYorkOpenTime, ictNewYorkOpenPrice + 0.0015 + 0.0002, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015 - 0.0002);
+          ObjectCreate(0, "ictNewyorkOpenBoxLeft", OBJ_TREND, 0, ictNewYorkOpenTime, ictNewYorkOpenPrice + 0.0015 + 0.0001, ictNewYorkOpenTime, ictNewYorkOpenPrice + 0.0015 - 0.0005);
+          ObjectCreate(0, "ictNewyorkOpenBoxRight", OBJ_TREND, 0, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015 + 0.0001, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015 - 0.0005);
      }
 }
 
@@ -163,10 +163,10 @@ void drawAsianSession() {
      asianHigh = asianPriceArray[asianHighPrice].high;
      asianLow = asianPriceArray[asianLowPrice].low;
      
-     ObjectCreate(_Symbol, "asianBox", OBJ_RECTANGLE, 0, asianOpenTime, asianPriceArray[asianLowPrice].low, asianCloseTime, asianPriceArray[asianHighPrice].high);
-     ObjectSetInteger(_Symbol, "asianBox",OBJPROP_BACK, true);
-     ObjectSetInteger(_Symbol, "asianBox",OBJPROP_COLOR, clrPurple);
-     ObjectSetInteger(_Symbol, "asianBox",OBJPROP_FILL, false);
+     ObjectCreate(0, "asianBox", OBJ_RECTANGLE, 0, asianOpenTime, asianPriceArray[asianLowPrice].low, asianCloseTime, asianPriceArray[asianHighPrice].high);
+     ObjectSetInteger(0, "asianBox",OBJPROP_BACK, true);
+     ObjectSetInteger(0, "asianBox",OBJPROP_COLOR, clrPurple);
+     ObjectSetInteger(0, "asianBox",OBJPROP_FILL, false);
 }
 
 void drawLondonSession() {
@@ -190,10 +190,10 @@ void drawLondonSession() {
      londonHigh = londonPriceArray[londonHighPrice].high;
      londonLow = londonPriceArray[londonLowPrice].low;
      
-     ObjectCreate(_Symbol, "londonBox", OBJ_RECTANGLE, 0, londonOpenTime, londonPriceArray[londonLowPrice].low, londonCloseTime, londonPriceArray[londonHighPrice].high);
-     ObjectSetInteger(_Symbol, "londonBox",OBJPROP_BACK, true);   
-     ObjectSetInteger(_Symbol, "londonBox",OBJPROP_COLOR, clrBlue);
-     ObjectSetInteger(_Symbol, "londonBox",OBJPROP_FILL, true);
+     ObjectCreate(0, "londonBox", OBJ_RECTANGLE, 0, londonOpenTime, londonPriceArray[londonLowPrice].low, londonCloseTime, londonPriceArray[londonHighPrice].high);
+     ObjectSetInteger(0, "londonBox",OBJPROP_BACK, true);   
+     ObjectSetInteger(0, "londonBox",OBJPROP_COLOR, clrBlue);
+     ObjectSetInteger(0, "londonBox",OBJPROP_FILL, true);
 }
 
 void drawNewYorkSession() {
@@ -217,10 +217,10 @@ void drawNewYorkSession() {
      newyorkHigh = newyorkPriceArray[newyorkHighPrice].high;
      newyorkLow = newyorkPriceArray[newyorkLowPrice].low;
      
-     ObjectCreate(Symbol(), "newyorkBox", OBJ_RECTANGLE, 0, newyorkOpenTime, newyorkPriceArray[newyorkLowPrice].low, newyorkCloseTime, newyorkPriceArray[newyorkHighPrice].high);
-     ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_BACK, true);
-     ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_COLOR, clrSpringGreen);
-     ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_FILL, true);
+     ObjectCreate(0, "newyorkBox", OBJ_RECTANGLE, 0, newyorkOpenTime, newyorkPriceArray[newyorkLowPrice].low, newyorkCloseTime, newyorkPriceArray[newyorkHighPrice].high);
+     ObjectSetInteger(0, "newyorkBox",OBJPROP_BACK, true);
+     ObjectSetInteger(0, "newyorkBox",OBJPROP_COLOR, clrSpringGreen);
+     ObjectSetInteger(0, "newyorkBox",OBJPROP_FILL, true);
 }
 
 //Switch Case 
@@ -229,14 +229,14 @@ void drawNewYorkSession() {
 
 
 
-//ObjectCreate(_Symbol, "yesterdayLow", OBJ_TREND, 0, dailyPriceArray[0].time, dailyPriceArray[1].low, dailyPriceArray[0].time + 86400, dailyPriceArray[1].low);
-     //ObjectCreate(_Symbol, "yesterdayHigh", OBJ_TREND, 0, dailyPriceArray[0].time, dailyPriceArray[1].high, dailyPriceArray[0].time + 86400, dailyPriceArray[1].high);
-     //ObjectCreate(_Symbol, "yesterdayClose", OBJ_TREND, 0, dailyPriceArray[0].time, dailyPriceArray[1].close, dailyPriceArray[0].time + 86400, dailyPriceArray[1].close);
-     //ObjectCreate(_Symbol, "yesterdayOpen", OBJ_TREND, 0, dailyPriceArray[0].time, dailyPriceArray[1].open, dailyPriceArray[0].time + 86400, dailyPriceArray[1].open);
-     //ObjectSetInteger(_Symbol, "yesterdayLow",OBJPROP_COLOR, clrDodgerBlue);
-     //ObjectSetInteger(_Symbol, "yesterdayHigh",OBJPROP_COLOR, clrDodgerBlue);
-     //ObjectSetInteger(_Symbol, "yesterdayClose",OBJPROP_COLOR, clrWhite);
-     //ObjectSetInteger(_Symbol, "yesterdayOpen",OBJPROP_COLOR, clrGray);
+//ObjectCreate(0, "yesterdayLow", OBJ_TREND, 0, dailyPriceArray[0].time, dailyPriceArray[1].low, dailyPriceArray[0].time + 86400, dailyPriceArray[1].low);
+     //ObjectCreate(0, "yesterdayHigh", OBJ_TREND, 0, dailyPriceArray[0].time, dailyPriceArray[1].high, dailyPriceArray[0].time + 86400, dailyPriceArray[1].high);
+     //ObjectCreate(0, "yesterdayClose", OBJ_TREND, 0, dailyPriceArray[0].time, dailyPriceArray[1].close, dailyPriceArray[0].time + 86400, dailyPriceArray[1].close);
+     //ObjectCreate(0, "yesterdayOpen", OBJ_TREND, 0, dailyPriceArray[0].time, dailyPriceArray[1].open, dailyPriceArray[0].time + 86400, dailyPriceArray[1].open);
+     //ObjectSetInteger(0, "yesterdayLow",OBJPROP_COLOR, clrDodgerBlue);
+     //ObjectSetInteger(0, "yesterdayHigh",OBJPROP_COLOR, clrDodgerBlue);
+     //ObjectSetInteger(0, "yesterdayClose",OBJPROP_COLOR, clrWhite);
+     //ObjectSetInteger(0, "yesterdayOpen",OBJPROP_COLOR, clrGray);
 
 
 
