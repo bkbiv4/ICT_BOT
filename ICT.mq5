@@ -258,11 +258,15 @@
 MqlRates dailyPriceArray[], asianPriceArray[], newyorkPriceArray[], londonPriceArray[]; 
      
 void OnTick() {
+
+
+     /// MARK: - Daily Session Values
      ArraySetAsSeries(dailyPriceArray, true);
      int dailyData = CopyRates(_Symbol, PERIOD_D1, 0, 28, dailyPriceArray);
+     double dailyOpenPrice = dailyPriceArray[0].open;
      
-     
-     datetime asianOpenTime = dailyPriceArray[0].time + 10800;
+     datetime dailyOpenTime = dailyPriceArray[0].time;
+     datetime asianOpenTime = dailyOpenTime + 10800;
      datetime asianCloseTime = asianOpenTime + 32400;
      datetime londonOpenTime = dailyPriceArray[0].time + 36000;
      datetime londonCloseTime = londonOpenTime + 32400;
@@ -271,13 +275,13 @@ void OnTick() {
      
  
      
-     ObjectCreate(_Symbol, "dailyOpen", OBJ_VLINE, 0, dailyPriceArray[1].time, 0);
+     ObjectCreate(_Symbol, "dailyOpen", OBJ_VLINE, 0, dailyOpenTime, 0);
      ObjectCreate(_Symbol, "asianOpen", OBJ_VLINE, 0, asianOpenTime, 0);
      ObjectCreate(_Symbol, "asianClose", OBJ_VLINE, 0, asianCloseTime, 0);
      ObjectCreate(_Symbol, "londonOpen", OBJ_VLINE, 0, londonOpenTime, 0);
      ObjectCreate(_Symbol, "londonClose", OBJ_VLINE, 0, londonCloseTime, 0);
      ObjectCreate(_Symbol, "newyorkOpen", OBJ_VLINE, 0, newyorkOpenTime, 0);
-    // ObjectCreate(Symbol, "newyorkClose", OBJ_VLINE, 0, newyorkCloseTime, 0);
+     ObjectCreate(_Symbol, "newyorkClose", OBJ_VLINE, 0, newyorkCloseTime, 0);
      
      ArraySetAsSeries(asianPriceArray, true);
      
@@ -324,7 +328,32 @@ void OnTick() {
      double londonHigh = londonPriceArray[londonHighPrice].high;
      double londonLow = londonPriceArray[londonLowPrice].low;
      
-     ObjectCreate(_Symbol, "londonHigh", OBJ_HLINE, 0, 0, londonHigh);
-     ObjectCreate(_Symbol, "londonLow", OBJ_HLINE, 0, 0, londonLow);
+     // ObjectCreate(_Symbol, "londonHigh", OBJ_HLINE, 0, 0, londonHigh);
+     // ObjectCreate(_Symbol, "londonLow", OBJ_HLINE, 0, 0, londonLow);
+
+     //--- New York Session Values
+     
+     
+     ArraySetAsSeries(newyorkPriceArray, true);
+     
+     int newyorkOpenBar = iBarShift(_Symbol, PERIOD_M1, newyorkOpenTime, false);
+     int newyorkData = CopyRates(_Symbol, PERIOD_M1, newyorkOpenTime, newyorkCloseTime, newyorkPriceArray);
+     
+     double newyorkHighPrices[], newyorkLowPrices[];
+     
+     ArraySetAsSeries(newyorkHighPrices, true);
+     ArraySetAsSeries(newyorkLowPrices, true);
+     
+     CopyHigh(_Symbol, PERIOD_M1, newyorkOpenTime, newyorkCloseTime, newyorkHighPrices);
+     CopyLow(_Symbol, PERIOD_M1, newyorkOpenTime, newyorkCloseTime, newyorkLowPrices);
+     
+     int newyorkHighPrice = ArrayMaximum(newyorkHighPrices, 0);
+     int newyorkLowPrice = ArrayMinimum(newyorkLowPrices, 0);
+     
+     double newyorkHigh = newyorkPriceArray[newyorkHighPrice].high;
+     double newyorkLow = newyorkPriceArray[newyorkLowPrice].low;
+     
+     // ObjectCreate(_Symbol, "londonHigh", OBJ_HLINE, 0, 0, londonHigh);
+     // ObjectCreate(_Symbol, "londonLow", OBJ_HLINE, 0, 0, londonLow);
 
 }
