@@ -229,12 +229,7 @@ void drawNewYorkSession() {
 //Switch Case 
 //     //On the chart set up clickable butttons to control the switch
 //     //Use boolean to set up different modes
-     
-//     if (ictlondonclosekillzone) {
-//          Comment("True");
-//          
-//     
-//     }
+
 
 
 //ObjectCreate(_Symbol, "yesterdayLow", OBJ_TREND, 0, dailyPriceArray[0].time, dailyPriceArray[1].low, dailyPriceArray[0].time + 86400, dailyPriceArray[1].low);
