@@ -265,12 +265,12 @@ void OnTick() {
      int dailyData = CopyRates(_Symbol, PERIOD_D1, 0, 28, dailyPriceArray);
      double dailyOpenPrice = dailyPriceArray[0].open;
      
-     datetime dailyOpenTime = dailyPriceArray[0].time;
+     datetime dailyOpenTime = dailyPriceArray[1].time;
      datetime asianOpenTime = dailyOpenTime + 10800;
      datetime asianCloseTime = asianOpenTime + 32400;
-     datetime londonOpenTime = dailyPriceArray[0].time + 36000;
+     datetime londonOpenTime = dailyPriceArray[1].time + 36000;
      datetime londonCloseTime = londonOpenTime + 32400;
-     datetime newyorkOpenTime = dailyPriceArray[0].time + 54000;
+     datetime newyorkOpenTime = dailyPriceArray[1].time + 54000;
      datetime newyorkCloseTime = newyorkOpenTime + 32400;
      
  
@@ -302,9 +302,6 @@ void OnTick() {
      double asianHigh = asianPriceArray[asianHighPrice].high;
      double asianLow = asianPriceArray[asianLowPrice].low;
      
-     //ObjectCreate(_Symbol, "asianHigh", OBJ_HLINE, 0, 0, asianHigh);
-     //ObjectCreate(_Symbol, "asianLow", OBJ_HLINE, 0, 0, asianLow);
-     
      
      //--- London Session Values
      
@@ -328,8 +325,7 @@ void OnTick() {
      double londonHigh = londonPriceArray[londonHighPrice].high;
      double londonLow = londonPriceArray[londonLowPrice].low;
      
-     // ObjectCreate(_Symbol, "londonHigh", OBJ_HLINE, 0, 0, londonHigh);
-     // ObjectCreate(_Symbol, "londonLow", OBJ_HLINE, 0, 0, londonLow);
+     
 
      //--- New York Session Values
      
@@ -353,7 +349,13 @@ void OnTick() {
      double newyorkHigh = newyorkPriceArray[newyorkHighPrice].high;
      double newyorkLow = newyorkPriceArray[newyorkLowPrice].low;
      
-     // ObjectCreate(_Symbol, "londonHigh", OBJ_HLINE, 0, 0, londonHigh);
-     // ObjectCreate(_Symbol, "londonLow", OBJ_HLINE, 0, 0, londonLow);
+     
+     ObjectCreate(_Symbol, "asianBox", OBJ_RECTANGLE, 0, asianOpenTime, asianPriceArray[asianLowPrice].low, asianCloseTime, asianPriceArray[asianHighPrice].high);
+     ObjectSetInteger(_Symbol, "asianBox",OBJPROP_BACK, true);
+     ObjectCreate(_Symbol, "newyorkBox", OBJ_RECTANGLE, 0, newyorkOpenTime, newyorkPriceArray[newyorkLowPrice].low, newyorkCloseTime, newyorkPriceArray[newyorkHighPrice].high);
+     ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_BACK, true);
+     ObjectCreate(_Symbol, "londonBox", OBJ_RECTANGLE, 0, londonOpenTime, londonPriceArray[londonLowPrice].low, londonCloseTime, londonPriceArray[londonHighPrice].high);
+     ObjectSetInteger(_Symbol, "londonBox",OBJPROP_BACK, true);
+
 
 }
