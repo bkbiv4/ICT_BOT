@@ -41,7 +41,7 @@ void OnTick() {
      datetime dailyOpenTime = dailyPriceArray[0].time;
      ObjectCreate(_Symbol, "dailyOpen", OBJ_VLINE, 0, dailyOpenTime, 0);
      ObjectCreate(_Symbol, "dailyHigh", OBJ_TREND, 0, dailyOpenTime, dailyHighPrice, dailyOpenTime + 86400, dailyHighPrice);
-     ObjectCreate(Symbol(), "dailyLow", OBJ_TREND, 0, dailyOpenTime, dailyLowPrice, dailyOpenTime + 86400, dailyLowPrice);
+     ObjectCreate(_Symbol, "dailyLow", OBJ_TREND, 0, dailyOpenTime, dailyLowPrice, dailyOpenTime + 86400, dailyLowPrice);
 
      asianOpenTime = dailyPriceArray[0].time + 10800;
      asianCloseTime = asianOpenTime + 32400;
@@ -205,7 +205,7 @@ void drawNewYorkSession() {
      newyorkHigh = newyorkPriceArray[newyorkHighPrice].high;
      newyorkLow = newyorkPriceArray[newyorkLowPrice].low;
      
-     ObjectCreate(Symbol(), "newyorkBox", OBJ_RECTANGLE, 0, newyorkOpenTime, newyorkPriceArray[newyorkLowPrice].low, newyorkCloseTime, newyorkPriceArray[newyorkHighPrice].high);
+     ObjectCreate(_Symbol, "newyorkBox", OBJ_RECTANGLE, 0, newyorkOpenTime, newyorkPriceArray[newyorkLowPrice].low, newyorkCloseTime, newyorkPriceArray[newyorkHighPrice].high);
      ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_BACK, true);
      ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_COLOR, clrSpringGreen);
      ObjectSetInteger(_Symbol, "newyorkBox",OBJPROP_FILL, true);
