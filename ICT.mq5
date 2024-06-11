@@ -51,7 +51,6 @@ void OnTick() {
      newyorkOpenTime = dailyPriceArray[0].time + 54000;
      newyorkCloseTime = newyorkOpenTime + 32400;
      
-     
      ArraySetAsSeries(hourlyPriceArray, true);
      int hourlyData = CopyRates(_Symbol, PERIOD_H1, 0, 240, hourlyPriceArray); 
 
@@ -59,10 +58,6 @@ void OnTick() {
      datetime judasOpenTime = dailyOpenTime + 25200;
      ObjectCreate(_Symbol,"judasOpenLine", OBJ_VLINE, 0, judasOpenTime, 0.0);
      ObjectSetInteger(_Symbol, "judasOpenLine", OBJPROP_COLOR, clrAzure);
-     
-     
-
-     
 
      if (drawSessionBoxes) {
           drawSessions();
