@@ -7,10 +7,13 @@
 #property link      "[https://www.mql5.com](https://www.mql5.com/)"
 #property version   "1.00"
 
+##include "tester.mq5";
+
 //input string startTradingTime = "09:00";
 //input string endTradingTime = "16:30";
 //input int dailyOpens = 0;
 //input int weeklyOpens = 0;
+void drawMAs();
 input bool ictKillzones = false;
 input bool drawSessionBoxes = true;
 MqlRates hourlyPriceArray[], dailyPriceArray[],  weeklyPriceArray[], asianPriceArray[], newyorkPriceArray[], londonPriceArray[]; 
@@ -123,6 +126,8 @@ void OnTick() {
           ObjectCreate(0, "ictNewyorkOpenBoxLeft", OBJ_TREND, 0, ictNewYorkOpenTime, ictNewYorkOpenPrice + 0.0015 + 0.0001, ictNewYorkOpenTime, ictNewYorkOpenPrice + 0.0015 - 0.0005);
           ObjectCreate(0, "ictNewyorkOpenBoxRight", OBJ_TREND, 0, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015 + 0.0001, ictNewYorkCloseTime, ictNewYorkOpenPrice + 0.0015 - 0.0005);
      }
+
+     drawMAs();
 }
 
 void drawSessions() {

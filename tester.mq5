@@ -9,9 +9,14 @@
 
 
 MqlRates hourlyPriceArray[], dailyPriceArray[];
-void OnTick() {
-          
+void drawMAs() {
 
+     // Create arrays for moving averages
+     double tenPeriodMArray[];
+     double twentyPeriodMArray[];
+
+     int tenperiodMA = iMA(_Symbol, PERIOD_D1, 10, 0, MODE_EMA, PRICE_CLOSE);
+     int twentyPeriodMA = iMA(_Symbol, PERIOD_D1, 10, 0, MODE_EMA, PRICE_CLOSE);
 
 
 }
