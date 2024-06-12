@@ -8,7 +8,6 @@
 #property version   "1.00"
 
 
-MqlRates hourlyPriceArray[], dailyPriceArray[];
 void drawMAs() {
 
      // Create arrays for moving averages

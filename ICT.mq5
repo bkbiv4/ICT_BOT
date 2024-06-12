@@ -7,7 +7,7 @@
 #property link      "[https://www.mql5.com](https://www.mql5.com/)"
 #property version   "1.00"
 
-##include "tester.mq5";
+#include "tester.mq5";
 
 //input string startTradingTime = "09:00";
 //input string endTradingTime = "16:30";
