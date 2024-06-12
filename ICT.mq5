@@ -28,7 +28,6 @@ void OnTick() {
      ObjectCreate(0, "weekOpenText", OBJ_TEXT, 0, weeklyPriceArray[0].time + 432000, weeklyOpenPrice);
      ObjectSetString(0, "weekOpenText", OBJPROP_TEXT, "Weekly Open");
      ObjectSetString(0, "weekOpenText", OBJPROP_FONT, "Arial");
-     ObjectSetString(0, "weekOpenText", OBJPROP_TEXT, "Weekly Open");
      ObjectSetInteger(0, "weekOpenText", OBJPROP_ANCHOR, ANCHOR_RIGHT_LOWER);
      ObjectSetInteger(0, "weekOpenText", OBJPROP_FONTSIZE, 8);
 
@@ -39,7 +38,7 @@ void OnTick() {
      double dailyHighPrice = dailyPriceArray[0].high;
      double dailyLowPrice = dailyPriceArray[0].low;
      datetime dailyOpenTime = dailyPriceArray[0].time;
-     ObjectCreate(0, "dailyOpen", OBJ_VLINE, 0, dailyOpenTime, 0);
+     // ObjectCreate(0, "dailyOpen", OBJ_VLINE, 0, dailyOpenTime, 0);
      ObjectCreate(0, "dailyHigh", OBJ_TREND, 0, dailyOpenTime, dailyHighPrice, dailyOpenTime + 86400, dailyHighPrice);
      ObjectCreate(0, "dailyLow", OBJ_TREND, 0, dailyOpenTime, dailyLowPrice, dailyOpenTime + 86400, dailyLowPrice);
      ObjectCreate(0, "dailyOpenPrice", OBJ_TREND, 0, dailyOpenTime, dailyOpenPrice, dailyOpenTime + 86400, dailyOpenPrice);
@@ -165,8 +164,15 @@ void drawAsianSession() {
      
      ObjectCreate(0, "asianBox", OBJ_RECTANGLE, 0, asianOpenTime, asianPriceArray[asianLowPrice].low, asianCloseTime, asianPriceArray[asianHighPrice].high);
      ObjectSetInteger(0, "asianBox",OBJPROP_BACK, true);
-     ObjectSetInteger(0, "asianBox",OBJPROP_COLOR, clrPurple);
+     ObjectSetInteger(0, "asianBox",OBJPROP_COLOR, C'177,0,177');
      ObjectSetInteger(0, "asianBox",OBJPROP_FILL, false);
+
+     ObjectCreate(0, "asianSessionText", OBJ_TEXT, 0, asianOpenTime, asianHigh);
+     ObjectSetString(0, "asianSessionText", OBJPROP_TEXT, "Asian Session");
+     ObjectSetString(0, "asianSessionText", OBJPROP_FONT, "Arial");
+     ObjectSetInteger(0, "asianSessionText", OBJPROP_ANCHOR, ANCHOR_LEFT_LOWER);
+     ObjectSetInteger(0, "asianSessionText", OBJPROP_FONTSIZE, 8);
+     ObjectSetInteger(0, "asianSessionText",OBJPROP_COLOR, C'177,0,177');
 }
 
 void drawLondonSession() {
@@ -192,8 +198,15 @@ void drawLondonSession() {
      
      ObjectCreate(0, "londonBox", OBJ_RECTANGLE, 0, londonOpenTime, londonPriceArray[londonLowPrice].low, londonCloseTime, londonPriceArray[londonHighPrice].high);
      ObjectSetInteger(0, "londonBox",OBJPROP_BACK, true);   
-     ObjectSetInteger(0, "londonBox",OBJPROP_COLOR, clrBlue);
-     ObjectSetInteger(0, "londonBox",OBJPROP_FILL, true);
+     ObjectSetInteger(0, "londonBox",OBJPROP_COLOR, C'105,105,255');
+     ObjectSetInteger(0, "londonBox",OBJPROP_FILL, false);
+
+     ObjectCreate(0, "londonSessionText", OBJ_TEXT, 0, londonOpenTime, londonHigh);
+     ObjectSetString(0, "londonSessionText", OBJPROP_TEXT, "London Session");
+     ObjectSetString(0, "londonSessionText", OBJPROP_FONT, "Arial");
+     ObjectSetInteger(0, "londonSessionText", OBJPROP_ANCHOR, ANCHOR_LEFT_LOWER);
+     ObjectSetInteger(0, "londonSessionText", OBJPROP_FONTSIZE, 8);
+     ObjectSetInteger(0, "londonSessionText",OBJPROP_COLOR, C'105,105,255');
 }
 
 void drawNewYorkSession() {
@@ -220,7 +233,14 @@ void drawNewYorkSession() {
      ObjectCreate(0, "newyorkBox", OBJ_RECTANGLE, 0, newyorkOpenTime, newyorkPriceArray[newyorkLowPrice].low, newyorkCloseTime, newyorkPriceArray[newyorkHighPrice].high);
      ObjectSetInteger(0, "newyorkBox",OBJPROP_BACK, true);
      ObjectSetInteger(0, "newyorkBox",OBJPROP_COLOR, clrSpringGreen);
-     ObjectSetInteger(0, "newyorkBox",OBJPROP_FILL, true);
+     ObjectSetInteger(0, "newyorkBox",OBJPROP_FILL, false);
+
+     ObjectCreate(0, "newyorkSessionText", OBJ_TEXT, 0, newyorkOpenTime, newyorkHigh);
+     ObjectSetString(0, "newyorkSessionText", OBJPROP_TEXT, "New York Session");
+     ObjectSetString(0, "newyorkSessionText", OBJPROP_FONT, "Arial");
+     ObjectSetInteger(0, "newyorkSessionText", OBJPROP_ANCHOR, ANCHOR_LEFT_LOWER);
+     ObjectSetInteger(0, "newyorkSessionText", OBJPROP_FONTSIZE, 8);
+     ObjectSetInteger(0, "newyorkSessionText",OBJPROP_COLOR, clrSpringGreen);
 }
 
 //Switch Case 
