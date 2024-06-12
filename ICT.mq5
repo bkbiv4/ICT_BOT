@@ -262,6 +262,7 @@ void drawNewYorkSession() {
      ObjectSetInteger(0, "newyorkSessionText",OBJPROP_COLOR, clrSpringGreen);
 }
 
+
 //Switch Case 
 //     //On the chart set up clickable butttons to control the switch
 //     //Use boolean to set up different modes
@@ -291,3 +292,7 @@ void drawNewYorkSession() {
 
      Map weekly opening
      */
+
+
+
+
